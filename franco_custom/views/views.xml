@@ -1,0 +1,233 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="franco_custom.form">
+      <field name="name">franco_custom form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+        <!-- Product to be selection -->
+         <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+          <attribute name="widget">selection</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_td_label')]" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman</attribute>
+          </xpath>
+                     <!-- Searching by customer only i sale order -->
+        <xpath expr="//field[@name='partner_id']" position="attributes">
+          <attribute name="domain">[('customer_rank','>',0)]</attribute>
+        </xpath>
+        <!-- count-->
+        <xpath expr="//field[@name='partner_id']" position="after">
+         <field name="count" invisible="1" />
+              <field name="three"  invisible="1" />
+        </xpath>
+
+                     <!--order date in date format  -->
+        <xpath expr="//field[@name='date_order']" position="attributes">
+          <attribute name="widget">date</attribute>
+          <attribute name="groups">sales_team.group_sale_salesman</attribute>
+        </xpath>
+
+                     <!-- Delivery date in date formt -->
+        <xpath expr="//field[@name='commitment_date']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+                     <!--  Expected Date in date format -->
+        <xpath expr="//field[@name='expected_date']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+                     <!--   Signed On in date format -->
+        <xpath expr="//field[@name='signed_on']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+      </field>
+    </record>
+
+<!-- ##################################################################################### -->
+
+    <record id="custom_prchase" model="ir.ui.view">
+      <field name="name">franco_custom_purchase form</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase.purchase_order_form"/>
+      <field name="arch" type="xml">
+
+        <!-- Product to be selection -->
+         <xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+          <attribute name="widget">selection</attribute>
+        </xpath>
+
+                         <!--search by vendor only  -->
+        <xpath expr="//field[@name='partner_id']" position="attributes">
+          <attribute name="domain">[('supplier_rank','>',0)]</attribute>
+        </xpath>
+
+                          <!--order date in date format  -->
+        <xpath expr="//field[@name='date_order']" position="attributes">
+          <attribute name="widget">date</attribute>
+          <attribute name="readonly">0</attribute>
+        </xpath>
+
+                           <!-- reciept date in date format -->
+        <xpath expr="//field[@name='date_planned']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+                            <!-- effective date in date format -->
+        <xpath expr="//field[@name='effective_date']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+                             <!--confirmation date in date format  -->
+        <xpath expr="//field[@name='date_approve']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+      </field>
+    </record>
+<!-- 
+###################################################################################### -->
+    <record id="custom_picking" model="ir.ui.view">
+      <field name="name">franco_custom_picking form</field>
+      <field name="model">stock.picking</field>
+      <field name="inherit_id" ref="stock.view_picking_form"/>
+      <field name="arch" type="xml">
+               <!-- Stock Picking deadline in date format -->
+
+        <xpath expr="//field[@name='date_deadline']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+             <!-- Schedule date in date format -->
+
+        <xpath expr="//field[@name='scheduled_date']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+             <!-- Done date in date formt -->
+
+        <xpath expr="//field[@name='date_done']" position="attributes">
+          <attribute name="widget">date</attribute>
+          <attribute name="readonly">0</attribute>
+        </xpath>
+
+      </field>
+    </record>
+
+    <!-- ################################################################################# -->
+
+    <record id="custom_account_move" model="ir.ui.view">
+      <field name="name">franco_custom_account_move form</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_move_form"/>
+      <field name="arch" type="xml">
+
+        <!-- Product to be selection -->
+         <xpath expr="/form/sheet/notebook/page[1]/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">
+          <attribute name="widget">selection</attribute>
+        </xpath>
+
+             <!-- Invoice date in date format -->
+
+        <xpath expr="//field[@name='invoice_date']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+             <!-- due date in date format -->
+
+        <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">
+          <attribute name="widget">date</attribute>
+        </xpath>
+
+      </field>
+    </record>
+
+
+    <!-- ################################################################################# -->
+
+    <template id="sale_order_custom_report" inherit_id="sale.report_saleorder_document">
+
+            <!-- Label of description to be product name -->
+      <xpath expr="//th[@name='th_description']" position="before">
+        <th name="th_product" class="text-left">Product Name</th>
+      </xpath>
+
+            <!-- Adding product instead of Label -->
+      <xpath expr="//td[@name='td_name']" position="before">
+        <td name="td_product"><span t-field="line.product_id"/></td>
+      </xpath>
+
+    </template>
+
+
+    <!-- ################################################################################## -->
+
+
+    <template id="RFQ_custom_report" inherit_id="purchase.report_purchasequotation_document">
+
+          <!-- Adding product instead of description -->
+      <xpath expr="//th[@name='th_description']" position="before">
+        <th name="th_producct" style="width:25%;" class="text-left"><strong>Product Name</strong></th>
+      </xpath>
+          <!-- Adding product instead of description -->
+      <xpath expr="//th[@name='th_description']" position="replace">
+        <th name="th_description" style="width:25%;"><strong>Description</strong></th>
+      </xpath>
+
+          <!-- Adding product -->
+      <xpath expr="/t/t/div/table/tbody/t/tr/t[1]/td[1]" position="before">
+
+         <td id="product">
+                                    <span t-field="order_line.product_id"/>
+                                </td>
+      </xpath> <!-- Adding product -->
+      <xpath expr="/t/t/div/table/tbody/t/tr/t[1]/td[4]" position="replace">
+
+        <td class="text-right">
+                                    <span t-esc="int(order_line['product_qty'])"/>
+<!--                                    <span t-field="order_line.product_qty"/>-->
+                                    <span t-field="order_line.product_uom" groups="uom.group_uom"/>
+                                </td>
+      </xpath>
+
+    </template>
+
+    <!-- ################################################################################## -->
+
+    <template id="purchase_order_custom_report" inherit_id="purchase.report_purchaseorder_document">
+
+         <!-- Product Name Instead of Description -->
+      <xpath expr="//th[@name='th_description']" position="replace">
+        <th name="th_description"><strong>Product Name</strong></th>
+      </xpath>
+
+          <!-- adding product instead of label -->
+      <xpath expr="/t/t/div/table/tbody/t/tr/t[1]/td/span[1]" position="replace">
+          <span t-field="order_line.product_id"/>
+      </xpath>
+
+    </template>
+
+
+    <!-- ################################################################################# -->
+
+    <template id="invoice_custom_report" inherit_id="account.report_invoice_document">
+
+           <!-- Product Name -->
+      <xpath expr="//th[@name='th_description']" position="replace">
+        <th name="th_description"><strong>Product Name</strong></th>
+      </xpath>
+
+           <!-- Product adding instead of Label -->
+      <xpath expr="//td[@name='account_invoice_line_name']" position="replace">
+        <td name="account_invoice_line_name"><span t-field="line.product_id"/></td>
+      </xpath>
+    </template>
+
+
+
+  </data>
+</odoo>

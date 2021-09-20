@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <template id="dpi_external_layout">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+    
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="o.dpi_company"/>
+                </t>
+                <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                    <t t-set="company" t-value="o.dpi_company.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="o.dpi_company"/>
+                </t>
+            </t>
+            <t t-set="original_company" t-value="res_company"/>
+            
+            <t t-if="original_company.external_report_layout_id" t-call="{{original_company.external_report_layout_id.key}}"><t t-raw="0"/></t>
+            <t t-else="else" t-call="web.external_layout_standard"><t t-raw="0"/></t>
+            </template>
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <!-- to Approve all records-->
+       <record id="view_approve_all_records" model="ir.actions.server">
+            <field name="name">Approve SO </field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">
+                for rec in records:
+                    if rec.state != 'sale':
+                        rec.action_confirm()</field>
+        </record>
+
+    </data>
+</odoo>

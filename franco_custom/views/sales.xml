@@ -1,0 +1,22 @@
+<odoo>
+  <data>
+
+    <record id="custom_crm" model="ir.ui.view">
+      <field name="name">franco_custom_crm_team form</field>
+      <field name="model">crm.team</field>
+      <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+      <field name="arch" type="xml">
+
+                         <!--search by vendor only  -->
+        <xpath expr="//field[@name='invoiced_target']" position="after">
+              <field name="wharehouse"  />
+
+         </xpath>
+
+      </field>
+    </record>
+
+
+
+  </data>
+</odoo>

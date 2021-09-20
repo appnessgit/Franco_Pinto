@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="franco_report_purchase_quotation" model="ir.actions.report">
+            <field name="name">Request for Quotation (DPI)</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">franco_custom.franco_report_purchaseorder</field>
+            <field name="report_file">franco_custom.franco_report_purchaseorder</field>
+            <field name="print_report_name">' Request for Quotation - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
