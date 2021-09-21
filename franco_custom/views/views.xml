@@ -119,7 +119,7 @@
 
     <!-- ################################################################################# -->
 
-    <record id="custom_account_move" model="ir.ui.view">
+      <record id="custom_account_move" model="ir.ui.view">
       <field name="name">franco_custom_account_move form</field>
       <field name="model">account.move</field>
       <field name="inherit_id" ref="account.view_move_form"/>
@@ -132,15 +132,15 @@
 
              <!-- Invoice date in date format -->
 
-        <xpath expr="//field[@name='invoice_date']" position="attributes">
-          <attribute name="widget">date</attribute>
-        </xpath>
+<!--        <xpath expr="//field[@name='invoice_date']" position="attributes">-->
+<!--          <attribute name="widget">datetime</attribute>-->
+<!--        </xpath>-->
 
              <!-- due date in date format -->
 
-        <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">
-          <attribute name="widget">date</attribute>
-        </xpath>
+<!--        <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">-->
+<!--          <attribute name="widget">date</attribute>-->
+<!--        </xpath>-->
 
       </field>
     </record>
