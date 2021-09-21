@@ -16,7 +16,7 @@ class SaleOrderLine(models.Model):
     test_tax = fields.Float("Section Tax")
     sequence = fields.Integer(string='Sequence',index=True)
 
-    def _prepare_invoice_line(self):
+    def _prepare_invoice_line(self, **optional_values):
         res = super()._prepare_invoice_line()
         res.update(show_details=self.show_details, show_subtotal=self.show_subtotal)
         return res

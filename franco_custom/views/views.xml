@@ -15,9 +15,9 @@
                     <attribute name="groups">sales_team.group_sale_salesman</attribute>
           </xpath>
                      <!-- Searching by customer only i sale order -->
-        <xpath expr="//field[@name='partner_id']" position="attributes">
-          <attribute name="domain">[('customer_rank','>',0)]</attribute>
-        </xpath>
+<!--        <xpath expr="//field[@name='partner_id']" position="attributes">-->
+<!--          <attribute name="domain">[('customer_rank','>',0)]</attribute>-->
+<!--        </xpath>-->
         <!-- count-->
         <xpath expr="//field[@name='partner_id']" position="after">
          <field name="count" invisible="1" />
@@ -61,10 +61,10 @@
           <attribute name="widget">selection</attribute>
         </xpath>
 
-                         <!--search by vendor only  -->
-        <xpath expr="//field[@name='partner_id']" position="attributes">
-          <attribute name="domain">[('supplier_rank','>',0)]</attribute>
-        </xpath>
+<!--                         &lt;!&ndash;search by vendor only  &ndash;&gt;-->
+<!--        <xpath expr="//field[@name='partner_id']" position="attributes">-->
+<!--          <attribute name="domain">[('supplier_rank','>',0)]</attribute>-->
+<!--        </xpath>-->
 
                           <!--order date in date format  -->
         <xpath expr="//field[@name='date_order']" position="attributes">
@@ -206,7 +206,7 @@
 
           <!-- adding product instead of label -->
       <xpath expr="/t/t/div/table/tbody/t/tr/t[1]/td/span[1]" position="replace">
-          <span t-field="order_line.product_id"/>
+          <span t-field="line.product_id"/>
       </xpath>
 
     </template>
