@@ -55,7 +55,7 @@ class SaleOrder(models.Model):
     def write(self, vals):
         res = super(SaleOrder,self).write(vals)
         for line in self.order_line:
-            print("SEQ. xxxxxxxxxxxxxxxxxxxx",line.sequence)
+            # print("SEQ. xxxxxxxxxxxxxxxxxxxx",line.sequence)
             if line.display_type == 'line_section':
                 price = 0.00
                 subtotal = 0.00
@@ -68,7 +68,7 @@ class SaleOrder(models.Model):
                 print("ORDER ID =================>",self.id)
                 for ol in order_lines:
                     if ol.display_type != 'line_section':
-                        print("OL Price Unit xxxxxxxxxxxxxxxxxxxxxx",ol.price_unit)
+                        # print("OL Price Unit xxxxxxxxxxxxxxxxxxxxxx",ol.price_unit)
                         price += ol.price_unit
                         subtotal += ol.price_subtotal
                         tax += ol.price_tax

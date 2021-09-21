@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import AccessError, UserError, ValidationError
+
 
 
 class franco_custom(models.Model):
@@ -24,6 +26,26 @@ class franco_custom(models.Model):
         required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         default=_sales_warehouse_id, check_company=True)
 
+    def action_confirm(self):
+        if self._get_forbidden_state_confirm() & set(self.mapped('state')):
+            raise UserError(_(
+                'It is not allowed to confirm an order in the following states: %s'
+            ) % (', '.join(self._get_forbidden_state_confirm())))
+
+        # for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
+        #     order.message_subscribe([order.partner_id.id])
+        self.write(self._prepare_confirmation_values())
+
+        # Context key 'default_name' is sometimes propagated up to here.
+        # We don't need it and it creates issues in the creation of linked records.
+        context = self._context.copy()
+        context.pop('default_name', None)
+
+        self.with_context(context)._action_confirm()
+        if self.env.user.has_group('sale.group_auto_done_setting'):
+            self.action_done()
+        return True
+
     @api.onchange('team_id')
     def onchange_team_wh(self):
         # raise UserWarning("Test")
@@ -44,7 +66,23 @@ class franco_custom(models.Model):
 
 class franco_custom_purchase(models.Model):
     _inherit = 'purchase.order'
-
+    def button_confirm(self):
+        for order in self:
+            if order.state not in ['draft', 'sent']:
+                continue
+            order._add_supplier_to_product()
+            # Deal with double validation process
+            if order.company_id.po_double_validation == 'one_step'\
+                    or (order.company_id.po_double_validation == 'two_step'\
+                        and order.amount_total < self.env.company.currency_id._convert(
+                            order.company_id.po_double_validation_amount, order.currency_id, order.company_id, order.date_order or fields.Date.today()))\
+                    or order.user_has_groups('purchase.group_purchase_manager'):
+                order.button_approve()
+            else:
+                order.write({'state': 'to approve'})
+            # if order.partner_id not in order.message_partner_ids:
+            #     order.message_subscribe([order.partner_id.id])
+        return True
 
 class franco_custom_picking(models.Model):
     _inherit = 'stock.picking'
