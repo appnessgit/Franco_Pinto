@@ -35,7 +35,7 @@ class StockValuationLayer(models.Model):
             if records:
                 for svl in records:
                     move_id = svl.stock_move_id.id
-                    if org_value[move_id] > 0:
+                    if org_value[move_id] and org_value[move_id] > 0:
                         self.env.cr.execute("""
                         UPDATE %s
                         SET create_date=%s, write_date=%s,

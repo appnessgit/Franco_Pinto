@@ -21,16 +21,34 @@ class createpurchaseorder(models.TransientModel):
 		res = super(createpurchaseorder, self).default_get(default_fields)
 		data = self.env['sale.order'].browse(self._context.get('active_ids',[]))
 		update = []
+		section_lines = []
 		for record in data.order_line:
-			update.append((0,0,{
-							'product_id' : record.product_id.id,
-							'product_uom' : record.product_uom.id,
-							'order_id': record.order_id.id,
-							'name' : record.name,
-							'product_qty' : record.product_uom_qty,
-							'price_unit' : record.price_unit,
-							'product_subtotal' : record.price_subtotal,
-							}))
+			# raise UserError(record.display_type)
+			if record.display_type == 'line_section':
+				# raise UserError(record.name)
+				update.append(
+					(
+						0,
+						0,
+						{
+							"name": record.name,
+							"display_type": "line_section",
+							# "sequence": data.sequence,
+						},
+					)
+				)
+				res.update({'new_order_line_ids': section_lines})
+			elif record.display_type != 'line_section':
+				update.append((0,0,{
+								'product_id' : record.product_id.id,
+								'product_uom' : record.product_uom.id,
+								'order_id': record.order_id.id,
+								'name' : record.name,
+								# "display_type": "line_section",
+								'product_qty' : record.product_uom_qty,
+								'price_unit' : record.price_unit,
+								'product_subtotal' : record.price_subtotal,
+								}))
 		res.update({'new_order_line_ids':update})
 		return res
 
@@ -47,21 +65,24 @@ class createpurchaseorder(models.TransientModel):
 			sale_order_name = data.order_id.name
 			if not sale_order_name:
 				sale_order_name = so.name
+			final_price = rule_id = False
 			if partner_pricelist:
 				product_context = dict(self.env.context, partner_id=self.partner_id.id, date=self.date_order, uom=data.product_uom.id)
-				final_price, rule_id = partner_pricelist.with_context(product_context).get_product_price_rule(data.product_id, data.product_qty or 1.0, self.partner_id)
+				if data.product_id:
+					final_price, rule_id = partner_pricelist.with_context(product_context).get_product_price_rule(data.product_id, data.product_qty or 1.0, self.partner_id)
 			
 			else:
 				final_price = data.product_id.standard_price
 			value.append([0,0,{
-								'product_id' : data.product_id.id,
+								'product_id' : data.product_id.id if data.product_id else False,
 								'name' : data.name,
-								'product_qty' : data.product_qty,
-								'order_id':data.order_id.id,
-								'product_uom' : data.product_uom.id,
-								'taxes_id' : data.product_id.supplier_taxes_id.ids,
+								'product_qty' : data.product_qty ,
+								# 'order_id':data.order_id.id if data.order_id else False,
+								'product_uom' : data.product_uom.id if data.product_uom else False,
+								'taxes_id' : data.product_id.supplier_taxes_id.ids if data.product_id and data.product_id.supplier_taxes_id else False,
 								'date_planned' : data.date_planned,
 								'price_unit' : final_price,
+								'display_type' : data.display_type,
 								}])
 		res.create({
 						'partner_id' : self.partner_id.id,
@@ -79,8 +100,11 @@ class Getsaleorderdata(models.TransientModel):
 	_description = "Get Sale Order Data"
 
 	new_order_line_id = fields.Many2one('create.purchaseorder')
-		
-	product_id = fields.Many2one('product.product', string="Product", required=True)
+	display_type = fields.Selection([
+		('line_section', "Section"),
+		('line_note', "Note")], default=False, help="Technical field for UX purpose.")
+	product_id = fields.Many2one('product.product', string="Product")
+	product_id = fields.Many2one('product.product', string="Product")
 	name = fields.Char(string="Description")
 	product_qty = fields.Float(string='Quantity', required=True)
 	date_planned = fields.Datetime(string='Scheduled Date', default = datetime.today())

@@ -57,9 +57,9 @@
       <field name="arch" type="xml">
 
         <!-- Product to be selection -->
-         <xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
-          <attribute name="widget">selection</attribute>
-        </xpath>
+<!--         <xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_id']" position="attributes">-->
+<!--          <attribute name="widget">selection</attribute>-->
+<!--        </xpath>-->
 
 <!--                         &lt;!&ndash;search by vendor only  &ndash;&gt;-->
 <!--        <xpath expr="//field[@name='partner_id']" position="attributes">-->
@@ -126,9 +126,9 @@
       <field name="arch" type="xml">
 
         <!-- Product to be selection -->
-         <xpath expr="/form/sheet/notebook/page[1]/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">
-          <attribute name="widget">selection</attribute>
-        </xpath>
+<!--         <xpath expr="/form/sheet/notebook/page[1]/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">-->
+<!--          <attribute name="widget">selection</attribute>-->
+<!--        </xpath>-->
 
              <!-- Invoice date in date format -->
 
