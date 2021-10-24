@@ -119,31 +119,31 @@
 
     <!-- ################################################################################# -->
 
-      <record id="custom_account_move" model="ir.ui.view">
-      <field name="name">franco_custom_account_move form</field>
-      <field name="model">account.move</field>
-      <field name="inherit_id" ref="account.view_move_form"/>
-      <field name="arch" type="xml">
+<!--      <record id="custom_account_move" model="ir.ui.view">-->
+<!--      <field name="name">franco_custom_account_move form</field>-->
+<!--      <field name="model">account.move</field>-->
+<!--      <field name="inherit_id" ref="account.view_move_form"/>-->
+<!--      <field name="arch" type="xml">-->
 
-        <!-- Product to be selection -->
-<!--         <xpath expr="/form/sheet/notebook/page[1]/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">-->
-<!--          <attribute name="widget">selection</attribute>-->
-<!--        </xpath>-->
+<!--        &lt;!&ndash; Product to be selection &ndash;&gt;-->
+<!--&lt;!&ndash;         <xpath expr="/form/sheet/notebook/page[1]/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">&ndash;&gt;-->
+<!--&lt;!&ndash;          <attribute name="widget">selection</attribute>&ndash;&gt;-->
+<!--&lt;!&ndash;        </xpath>&ndash;&gt;-->
 
-             <!-- Invoice date in date format -->
+<!--             &lt;!&ndash; Invoice date in date format &ndash;&gt;-->
 
-<!--        <xpath expr="//field[@name='invoice_date']" position="attributes">-->
-<!--          <attribute name="widget">datetime</attribute>-->
-<!--        </xpath>-->
+<!--&lt;!&ndash;        <xpath expr="//field[@name='invoice_date']" position="attributes">&ndash;&gt;-->
+<!--&lt;!&ndash;          <attribute name="widget">datetime</attribute>&ndash;&gt;-->
+<!--&lt;!&ndash;        </xpath>&ndash;&gt;-->
 
-             <!-- due date in date format -->
+<!--             &lt;!&ndash; due date in date format &ndash;&gt;-->
 
-<!--        <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">-->
-<!--          <attribute name="widget">date</attribute>-->
-<!--        </xpath>-->
+<!--&lt;!&ndash;        <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">&ndash;&gt;-->
+<!--&lt;!&ndash;          <attribute name="widget">date</attribute>&ndash;&gt;-->
+<!--&lt;!&ndash;        </xpath>&ndash;&gt;-->
 
-      </field>
-    </record>
+<!--      </field>-->
+<!--    </record>-->
 
 
     <!-- ################################################################################# -->

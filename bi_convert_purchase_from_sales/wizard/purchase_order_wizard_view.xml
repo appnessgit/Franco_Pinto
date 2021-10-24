@@ -22,7 +22,7 @@
                     <group>
                         <field name="new_order_line_ids" nolabel ="1">
                         <tree editable="botttom" create = 'false'>
-                            <field name="display_type"    />
+                            <field name="display_type" />
                             <field name="product_id" attrs="{'invisible': [('display_type', '=', 'line_section')]}"  />
                             <field name="name" />
                             <field name="product_qty" />
